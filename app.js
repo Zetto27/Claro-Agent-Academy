@@ -13,7 +13,25 @@ dotenv.config({ path: "./env/.env" });
 //4 - El directorio público
 app.use(express("/resources", express.static("public")));
 app.use("/resources", express.static(__dirname + "/public"));
-console.log(__dirname);
+
+// 5 Establecer conexion de plantillas
+app.set("view engine", "ejs");
+
+// 6- Invocar a bycryptjs
+const bcryptjs = require("bcryptjs");
+
+// 7- variables de sesión
+const session = require("express-session");
+app.use(
+  session({
+    secret: "secret",
+    resave: true,
+    saveUninitialized: true,
+  }),
+);
+
+// 8- Invocar a la base de datos
+const connnection = require("./database/db");
 
 app.get("/", (req, res) => {
   res.send("Hello World");
