@@ -111,7 +111,7 @@ app.post("/registro", async (req, res) => {
         if (error) {
           console.log(error);
         } else {
-          res.render("index", {
+          res.render("registro", {
             alert: true,
             alertTitle: "Registration",
             alertMessage: "!Succesful Registration¡",
