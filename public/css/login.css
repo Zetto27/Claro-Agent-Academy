@@ -1,0 +1,243 @@
+@import url("https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap");
+
+/* ─── VARIABLES ─── */
+:root {
+  --rojo: #da291c;
+  --rojo-oscuro: #a81e13;
+  --rojo-claro: #fff0ef;
+  --blanco: #ffffff;
+  --gris-fondo: #f2f4f7;
+  --gris-borde: #dde1e9;
+  --gris-texto: #6b7280;
+  --negro: #1a1d23;
+  --verde: #2e7d32;
+  --naranja: #e65100;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: "Nunito", "Segoe UI", sans-serif;
+  background: var(--gris-fondo);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+
+  /* Fondo sutil con patrón de puntos */
+  background-image: radial-gradient(circle, #d0d5de 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+/* ─── CAJA ─── */
+.login-box {
+  width: 100%;
+  max-width: 380px;
+  background: var(--blanco);
+  border-radius: 20px;
+  box-shadow:
+    0 8px 40px rgba(0, 0, 0, 0.1),
+    0 1px 4px rgba(0, 0, 0, 0.06);
+  overflow: hidden;
+}
+
+/* ─── ENCABEZADO ─── */
+.login-header {
+  background: var(--rojo);
+  background-image: linear-gradient(135deg, var(--rojo) 0%, var(--rojo-oscuro) 100%);
+  color: var(--blanco);
+  padding: 36px 28px 28px;
+  text-align: center;
+  position: relative;
+}
+
+/* Círculos decorativos en el header */
+.login-header::before,
+.login-header::after {
+  content: "";
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.07);
+}
+.login-header::before {
+  width: 140px;
+  height: 140px;
+  top: -50px;
+  right: -40px;
+}
+.login-header::after {
+  width: 90px;
+  height: 90px;
+  bottom: -30px;
+  left: -20px;
+}
+
+/* Ícono / avatar */
+.logo-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.2);
+  font-size: 1.1rem;
+  font-weight: 800;
+  letter-spacing: 1px;
+  margin-bottom: 12px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+.login-header h1 {
+  font-size: 1.25rem;
+  font-weight: 800;
+  margin-bottom: 4px;
+  letter-spacing: -0.3px;
+}
+
+.login-header p {
+  font-size: 0.78rem;
+  opacity: 0.8;
+  font-weight: 600;
+}
+
+/* ─── FORMULARIO ─── */
+.login-form {
+  padding: 28px 28px 20px;
+}
+
+.campo {
+  margin-bottom: 18px;
+}
+
+.campo label {
+  display: block;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--gris-texto);
+  margin-bottom: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+}
+
+/* Input con ícono */
+.input-wrapper {
+  position: relative;
+}
+
+.input-icon {
+  position: absolute;
+  left: 13px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--gris-texto);
+  display: flex;
+  align-items: center;
+  pointer-events: none;
+}
+
+.campo input {
+  width: 100%;
+  padding: 11px 14px 11px 40px;
+  font-size: 0.95rem;
+  font-family: inherit;
+  font-weight: 600;
+  border: 2px solid var(--gris-borde);
+  border-radius: 10px;
+  background: var(--gris-fondo);
+  color: var(--negro);
+  min-height: 46px;
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s,
+    background 0.2s;
+}
+
+.campo input::placeholder {
+  color: #b0b7c3;
+  font-weight: 400;
+}
+
+.campo input:focus {
+  outline: none;
+  border-color: var(--rojo);
+  background: var(--blanco);
+  box-shadow: 0 0 0 3px rgba(218, 41, 28, 0.1);
+}
+
+/* ─── BOTÓN ─── */
+.btn-entrar {
+  display: block;
+  width: 100%;
+  padding: 13px;
+  margin-top: 8px;
+  font-size: 0.97rem;
+  font-weight: 800;
+  font-family: inherit;
+  letter-spacing: 0.3px;
+  color: var(--blanco);
+  background: linear-gradient(135deg, var(--rojo) 0%, var(--rojo-oscuro) 100%);
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  min-height: 48px;
+  transition:
+    transform 0.15s,
+    box-shadow 0.15s,
+    filter 0.15s;
+  box-shadow: 0 4px 14px rgba(218, 41, 28, 0.35);
+}
+
+.btn-entrar:hover {
+  filter: brightness(1.07);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(218, 41, 28, 0.4);
+}
+
+.btn-entrar:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 8px rgba(218, 41, 28, 0.3);
+}
+
+/* ─── PIE ─── */
+.login-pie {
+  text-align: center;
+  padding: 14px 28px 20px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: #b0b7c3;
+  border-top: 1px solid var(--gris-borde);
+}
+
+/* ─── AVISO ─── */
+.aviso {
+  display: none;
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 11px 22px;
+  border-radius: 10px;
+  font-family: "Nunito", sans-serif;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--blanco);
+  z-index: 100;
+  max-width: 90%;
+  text-align: center;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+}
+
+.aviso.error {
+  display: block;
+  background: var(--naranja);
+}
+.aviso.ok {
+  display: block;
+  background: var(--verde);
+}

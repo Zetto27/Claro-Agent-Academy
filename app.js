@@ -33,8 +33,18 @@ app.use(
 // 8- Invocar a la base de datos
 const connnection = require("./database/db");
 
+// 9- Rutas
+
 app.get("/", (req, res) => {
-  res.send("Hello World");
+  res.render("index");
+});
+
+app.get("/login", (req, res) => {
+  res.render("login");
+});
+
+app.get("/principal", (req, res) => {
+  res.render("principal");
 });
 
 app.listen(3000, (req, res) => {

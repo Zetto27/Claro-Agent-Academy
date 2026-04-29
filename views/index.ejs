@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="resources/css/index.css" />
+  </head>
+
+  <body>
+    <header class="header">
+      <div class="header-izq">
+        <button class="btn-menu" id="btnMenu">☰</button>
+        <h1>Claro Agent Academy</h1>
+      </div>
+
+      <a href="/login" class="btn-salir">Salir</a>
+    </header>
+
+    <div class="layout">
+      <!-- SIDEBAR -->
+      <aside class="sidebar">
+        <div class="sidebar-header">
+          <div class="sidebar-logo">CA</div>
+          <div>
+            <div class="sidebar-titulo">ClaroAgent Academy</div>
+            <div class="sidebar-subtitulo">PBX Móvil</div>
+          </div>
+        </div>
+
+        <p class="sidebar-seccion">Módulos</p>
+
+        <nav class="sidebar-nav">
+          <a href="#" class="side-item activo" onclick="cargarVista('principal')">🏠 Inicio</a>
+          <a href="#" class="side-item" onclick="cargarVista('modulo1.html')">🏢 M1. Bienvenida</a>
+          <a href="#" class="side-item" onclick="cargarVista('modulo2.html')">📡 M2. Plataforma</a>
+        </nav>
+      </aside>
+
+      <!-- OVERLAY -->
+      <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+      <!-- CONTENIDO -->
+      <main class="contenido" id="contenido">
+        <!-- Aquí se carga todo -->
+      </main>
+    </div>
+
+    <!-- 🔥 SCRIPT -->
+    <script>
+      /* Sidebar */
+      var layout = document.querySelector(".layout");
+      var overlay = document.getElementById("sidebarOverlay");
+      var btn = document.getElementById("btnMenu");
+
+      btn.addEventListener("click", function () {
+        layout.classList.toggle("sidebar-abierto");
+
+        if (window.innerWidth <= 768) {
+          overlay.classList.toggle("visible");
+        }
+      });
+
+      overlay.addEventListener("click", function () {
+        layout.classList.remove("sidebar-abierto");
+        overlay.classList.remove("visible");
+      });
+
+      /* Cargar vistas */
+      function cargarVista(ruta) {
+        fetch(ruta)
+          .then((res) => res.text())
+          .then((html) => {
+            document.getElementById("contenido").innerHTML = html;
+          });
+      }
+
+      /* Cargar dashboard por defecto */
+      window.onload = function () {
+        cargarVista("principal");
+      };
+    </script>
+  </body>
+</html>

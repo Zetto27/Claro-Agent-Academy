@@ -1,0 +1,660 @@
+/* ─── VARIABLES ─── */
+:root {
+  --rojo: #da291c;
+  --rojo-oscuro: #a81e13;
+  --rojo-claro: #fdecea;
+  --blanco: #ffffff;
+  --gris-fondo: #f5f5f5;
+  --gris-borde: #e0e0e0;
+  --gris-texto: #757575;
+  --negro: #212121;
+  --verde: #2e7d32;
+  --naranja: #e65100;
+  --acento: #ff6f00;
+  --sidebar-w: 260px;
+  --sidebar-collapsed: 0px;
+  --header-h: 52px;
+  --transition: 0.28s ease;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: "Segoe UI", Arial, sans-serif;
+  background: var(--gris-fondo);
+  color: var(--negro);
+  line-height: 1.6;
+}
+
+/* ══════════════════════════════
+   HEADER
+══════════════════════════════ */
+.header {
+  background: var(--rojo);
+  color: var(--blanco);
+  padding: 0 16px;
+  height: var(--header-h);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  z-index: 200;
+}
+.header-izq {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.header h1 {
+  font-size: 0.95rem;
+}
+
+/* Botón hamburguesa — visible siempre */
+.btn-menu {
+  display: flex;
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  color: var(--blanco);
+  border-radius: 6px;
+  width: 34px;
+  height: 34px;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  padding: 6px;
+  flex-shrink: 0;
+  transition: background 0.15s;
+}
+.btn-menu:hover {
+  background: rgba(255, 255, 255, 0.32);
+}
+.btn-menu svg {
+  width: 18px;
+  height: 18px;
+  display: block;
+  transition: transform 0.28s;
+}
+
+/* Cuando el sidebar está abierto, rotar el icono */
+.layout.sidebar-abierto .btn-menu svg {
+  transform: rotate(90deg);
+}
+
+.btn-salir {
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  color: var(--blanco);
+  font-family: inherit;
+  font-size: 0.75rem;
+  padding: 6px 14px;
+  border-radius: 20px;
+  cursor: pointer;
+  text-decoration: none;
+}
+.btn-salir:hover {
+  background: rgba(255, 255, 255, 0.32);
+}
+
+/* ─── BARRA PROGRESO GLOBAL ─── */
+.barra-global {
+  background: rgba(218, 41, 28, 0.25);
+  height: 4px;
+}
+.barra-global-fill {
+  height: 100%;
+  background: var(--rojo-oscuro);
+  transition: width 0.5s;
+  width: 0%;
+}
+
+/* ══════════════════════════════
+   LAYOUT
+══════════════════════════════ */
+.layout {
+  display: flex;
+  min-height: calc(100vh - var(--header-h));
+  position: relative;
+}
+
+/* ══════════════════════════════
+   SIDEBAR
+══════════════════════════════ */
+.sidebar {
+  width: var(--sidebar-collapsed);
+  min-width: var(--sidebar-collapsed);
+  background: var(--blanco);
+  border-right: 1px solid var(--gris-borde);
+  display: flex;
+  flex-direction: column;
+  position: sticky;
+  top: var(--header-h);
+  height: calc(100vh - var(--header-h));
+  overflow: hidden; /* oculta contenido al colapsar */
+  transition:
+    width var(--transition),
+    min-width var(--transition);
+  z-index: 100;
+}
+
+/* Estado ABIERTO */
+.layout.sidebar-abierto .sidebar {
+  width: var(--sidebar-w);
+  min-width: var(--sidebar-w);
+  overflow-y: auto;
+}
+
+/* Evitar que el texto salte antes de terminar la animación */
+.sidebar * {
+  white-space: nowrap;
+}
+
+/* ── Header del sidebar ── */
+.sidebar-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 20px 16px 16px;
+  border-bottom: 1px solid var(--gris-borde);
+  min-width: var(--sidebar-w);
+}
+.sidebar-logo {
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+  border-radius: 10px;
+  background: var(--rojo);
+  color: var(--blanco);
+  font-weight: 800;
+  font-size: 0.85rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.sidebar-titulo {
+  font-size: 0.82rem;
+  font-weight: 700;
+  line-height: 1.2;
+}
+.sidebar-subtitulo {
+  font-size: 0.7rem;
+  color: var(--gris-texto);
+}
+
+/* ── Progreso en sidebar ── */
+.sidebar-progreso {
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--gris-borde);
+  min-width: var(--sidebar-w);
+}
+.sidebar-progreso-label {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.72rem;
+  color: var(--gris-texto);
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+.sidebar-barra {
+  height: 6px;
+  background: var(--gris-borde);
+  border-radius: 99px;
+  overflow: hidden;
+}
+.sidebar-barra-fill {
+  height: 100%;
+  background: var(--rojo);
+  border-radius: 99px;
+  transition: width 0.5s;
+  width: 0%;
+}
+
+/* ── Título sección ── */
+.sidebar-seccion {
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  color: var(--gris-texto);
+  padding: 14px 16px 6px;
+  min-width: var(--sidebar-w);
+}
+
+/* ── Nav items ── */
+.sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  padding: 0 8px;
+  gap: 2px;
+  min-width: var(--sidebar-w);
+}
+
+.side-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 10px;
+  border-radius: 8px;
+  text-decoration: none;
+  color: var(--negro);
+  font-size: 0.82rem;
+  transition: background 0.15s;
+}
+.side-item:hover {
+  background: var(--gris-fondo);
+}
+.side-item.activo {
+  background: var(--rojo-claro);
+  color: var(--rojo);
+  font-weight: 700;
+}
+.side-item.completo {
+  color: var(--verde);
+}
+.side-item.bloqueado {
+  opacity: 0.45;
+  pointer-events: none;
+}
+
+.side-emoji {
+  font-size: 1rem;
+  width: 22px;
+  text-align: center;
+  flex-shrink: 0;
+}
+.side-texto {
+  flex: 1;
+  line-height: 1.3;
+}
+
+.side-badge {
+  font-size: 0.6rem;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: 99px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.side-badge.ok {
+  background: #e8f5e9;
+  color: var(--verde);
+}
+.side-badge.activo {
+  background: var(--rojo-claro);
+  color: var(--rojo);
+}
+.side-badge.bloq {
+  background: var(--gris-borde);
+  color: var(--gris-texto);
+}
+
+/* ── Pie del sidebar ── */
+.sidebar-pie {
+  margin-top: auto;
+  padding: 12px;
+  border-top: 1px solid var(--gris-borde);
+  min-width: var(--sidebar-w);
+}
+.btn-reiniciar-side {
+  width: 100%;
+  padding: 9px;
+  background: var(--rojo-claro);
+  color: var(--rojo);
+  border: none;
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 0.78rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+.btn-reiniciar-side:hover {
+  background: #f9d4d2;
+}
+
+/* Overlay (solo mobile) */
+.sidebar-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 99;
+}
+.sidebar-overlay.visible {
+  display: block;
+}
+
+/* ══════════════════════════════
+   CONTENIDO PRINCIPAL
+══════════════════════════════ */
+.contenido {
+  flex: 1;
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 20px 16px 80px;
+  transition: margin-left var(--transition);
+}
+
+/* ─── BIENVENIDA ─── */
+.bienvenida {
+  background: var(--blanco);
+  border-radius: 10px;
+  padding: 20px;
+  margin-bottom: 16px;
+  border-left: 4px solid var(--rojo);
+}
+.bienvenida h2 {
+  font-size: 1.1rem;
+  margin-bottom: 4px;
+}
+.bienvenida .info {
+  font-size: 0.8rem;
+  color: var(--gris-texto);
+}
+
+/* ─── PROGRESO CARD ─── */
+.progreso-card {
+  background: var(--blanco);
+  border-radius: 10px;
+  padding: 20px;
+  margin-bottom: 16px;
+  text-align: center;
+}
+.progreso-card .numero {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--acento);
+}
+.progreso-card .texto {
+  font-size: 0.82rem;
+  color: var(--gris-texto);
+}
+
+/* ─── SECCIÓN TÍTULO ─── */
+.seccion-titulo {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--gris-texto);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 10px;
+}
+
+/* ─── MÓDULOS ─── */
+.modulo-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--blanco);
+  border-radius: 10px;
+  padding: 14px 16px;
+  margin-bottom: 10px;
+  text-decoration: none;
+  color: inherit;
+  border: 2px solid transparent;
+  min-height: 64px;
+  transition: box-shadow 0.15s;
+}
+.modulo-card:hover:not(.bloqueado) {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+.modulo-card.activo {
+  border-color: var(--rojo);
+}
+.modulo-card.completo {
+  border-color: var(--verde);
+}
+.modulo-card.bloqueado {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.modulo-emoji {
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.3rem;
+  background: var(--gris-fondo);
+}
+.modulo-card.activo .modulo-emoji {
+  background: var(--rojo-claro);
+}
+.modulo-card.completo .modulo-emoji {
+  background: #e8f5e9;
+}
+
+.modulo-info {
+  flex: 1;
+}
+.modulo-info h3 {
+  font-size: 0.88rem;
+  line-height: 1.3;
+}
+.modulo-info span {
+  font-size: 0.72rem;
+  color: var(--gris-texto);
+}
+
+.modulo-estado {
+  font-size: 0.65rem;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 20px;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.estado-bloq {
+  background: var(--gris-borde);
+  color: var(--gris-texto);
+}
+.estado-activo {
+  background: var(--rojo-claro);
+  color: var(--rojo);
+}
+.estado-ok {
+  background: #e8f5e9;
+  color: var(--verde);
+}
+
+/* ─── INSIGNIAS ─── */
+.insignias-card {
+  background: var(--blanco);
+  border-radius: 10px;
+  padding: 20px;
+  margin-bottom: 16px;
+}
+.insignias-grid {
+  display: flex;
+  justify-content: space-around;
+  gap: 8px;
+  text-align: center;
+}
+.insignia {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+.insignia .icono {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--gris-borde);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+}
+.insignia .icono.ganada {
+  background: #fff3e0;
+}
+.insignia .nombre {
+  font-size: 0.6rem;
+  color: var(--gris-texto);
+}
+
+/* ─── BOTÓN REINICIAR ─── */
+.btn-reiniciar {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  background: var(--rojo-claro);
+  color: var(--rojo);
+  border: none;
+  border-radius: 6px;
+  font-family: inherit;
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  margin-bottom: 16px;
+}
+
+/* ─── CERTIFICADO ─── */
+.cert-banner {
+  display: none;
+  background: var(--verde);
+  color: var(--blanco);
+  border-radius: 10px;
+  padding: 20px;
+  margin-bottom: 16px;
+  text-align: center;
+}
+.cert-banner.visible {
+  display: block;
+}
+.cert-banner h3 {
+  font-size: 1rem;
+  margin-bottom: 4px;
+}
+.cert-banner p {
+  font-size: 0.82rem;
+  opacity: 0.9;
+}
+
+/* ══════════════════════════════
+   MODAL
+══════════════════════════════ */
+.modal-fondo {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 300;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+}
+.modal-fondo.visible {
+  display: flex;
+}
+.modal-caja {
+  background: var(--blanco);
+  border-radius: 10px;
+  padding: 24px;
+  max-width: 320px;
+  width: 100%;
+  text-align: center;
+}
+.modal-caja h3 {
+  font-size: 1rem;
+  margin-bottom: 8px;
+}
+.modal-caja p {
+  font-size: 0.82rem;
+  color: var(--gris-texto);
+  margin-bottom: 16px;
+}
+.modal-btns {
+  display: flex;
+  gap: 8px;
+}
+.modal-btns button {
+  flex: 1;
+  padding: 10px;
+  border: none;
+  border-radius: 6px;
+  font-family: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  min-height: 40px;
+}
+.btn-cancelar {
+  background: var(--gris-borde);
+  color: var(--negro);
+}
+.btn-confirmar {
+  background: var(--rojo);
+  color: var(--blanco);
+}
+
+/* ══════════════════════════════
+   NAV INFERIOR (solo mobile)
+══════════════════════════════ */
+.nav-inferior {
+  display: none;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: var(--blanco);
+  border-top: 1px solid var(--gris-borde);
+  justify-content: space-around;
+  padding: 8px 0;
+  z-index: 50;
+}
+.nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-decoration: none;
+  color: var(--gris-texto);
+  font-size: 0.6rem;
+  gap: 2px;
+  min-height: 40px;
+  justify-content: center;
+}
+.nav-item.activo {
+  color: var(--rojo);
+}
+.nav-item svg {
+  width: 20px;
+  height: 20px;
+}
+
+/* ══════════════════════════════
+   RESPONSIVE — MOBILE
+══════════════════════════════ */
+@media (max-width: 768px) {
+  /* Sidebar sale de posición sticky y se superpone */
+  .sidebar {
+    position: fixed;
+    top: var(--header-h);
+    left: 0;
+    height: calc(100vh - var(--header-h));
+    width: 0 !important;
+    min-width: 0 !important;
+    box-shadow: none;
+    transition:
+      width var(--transition),
+      box-shadow var(--transition);
+  }
+  .layout.sidebar-abierto .sidebar {
+    width: var(--sidebar-w) !important;
+    min-width: var(--sidebar-w) !important;
+    box-shadow: 4px 0 20px rgba(0, 0, 0, 0.15);
+    overflow-y: auto;
+  }
+  .nav-inferior {
+    display: flex;
+  }
+  .contenido {
+    padding-bottom: 90px;
+  }
+}
