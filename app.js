@@ -35,20 +35,16 @@ const connnection = require("./database/db");
 
 // 9- Rutas
 
-app.get("/", (req, res) => {
-  res.render("index", { nombre: "Karen Paez" });
-});
-
 app.get("/login", (req, res) => {
   res.render("login");
 });
 
-app.get("/principal", (req, res) => {
-  res.render("principal");
-});
-
 app.get("/registro", (req, res) => {
   res.render("registro");
+});
+
+app.get("/modulo1", (req, res) => {
+  res.render("modulo1");
 });
 
 // 10- Ruta para registrar usuarios
@@ -172,54 +168,60 @@ app.post("/auth", async (req, res) => {
     });
   }
 
-  connnection.query("SELECT * FROM usuarios WHERE usuario = ?", [usuario], async (error, results) => {
-    if (error) {
-      console.log(error);
-      return res.send("Error en el servidor");
-    }
+  connnection.query(
+    "SELECT u.*, r.nombre_rol FROM usuarios u JOIN roles r ON u.id_rol = r.id_rol WHERE u.usuario = ?",
+    [usuario],
+    async (error, results) => {
+      if (error) {
+        console.log(error);
+        return res.send("Error en el servidor");
+      }
 
-    // ❌ usuario no existe
-    if (results.length === 0) {
-      return res.render("login", {
+      // ❌ usuario no existe
+      if (results.length === 0) {
+        return res.render("login", {
+          alert: true,
+          alertTitle: "Error",
+          alertMessage: "Usuario y/o contraseña incorrecta",
+          alertIcon: "error",
+          showConfirmButton: true,
+          timer: false,
+          ruta: "login",
+        });
+      }
+
+      // 🔐 comparar contraseña
+      const valido = await bcryptjs.compare(contrasena, results[0].contrasena);
+
+      if (!valido) {
+        return res.render("login", {
+          alert: true,
+          alertTitle: "Error",
+          alertMessage: "Usuario y/o contraseña incorrecta",
+          alertIcon: "error",
+          showConfirmButton: true,
+          timer: false,
+          ruta: "login",
+        });
+      }
+
+      // ✅ login correcto
+      req.session.loggedin = true; // 🔥 era res.session ❌
+      req.session.nombre = results[0].nombre;
+      req.session.rol = results[0].nombre_rol;
+      req.session.id_usuario = results[0].id_usuario;
+
+      res.render("login", {
         alert: true,
-        alertTitle: "Error",
-        alertMessage: "Usuario y/o contraseña incorrecta",
-        alertIcon: "error",
-        showConfirmButton: true,
-        timer: false,
-        ruta: "login",
+        alertTitle: "Login",
+        alertMessage: "¡Login correcto!",
+        alertIcon: "success",
+        showConfirmButton: false,
+        timer: 1500,
+        ruta: "",
       });
-    }
-
-    // 🔐 comparar contraseña
-    const valido = await bcryptjs.compare(contrasena, results[0].contrasena);
-
-    if (!valido) {
-      return res.render("login", {
-        alert: true,
-        alertTitle: "Error",
-        alertMessage: "Usuario y/o contraseña incorrecta",
-        alertIcon: "error",
-        showConfirmButton: true,
-        timer: false,
-        ruta: "login",
-      });
-    }
-
-    // ✅ login correcto
-    req.session.loggedin = true; // 🔥 era res.session ❌
-    req.session.name = results[0].nombre;
-
-    res.render("login", {
-      alert: true,
-      alertTitle: "Login",
-      alertMessage: "¡Login correcto!",
-      alertIcon: "success",
-      showConfirmButton: false,
-      timer: 1500,
-      ruta: "",
-    });
-  });
+    },
+  );
 });
 
 // autenticación para rutas privadas
@@ -227,7 +229,7 @@ app.get("/", (req, res) => {
   if (req.session.loggedin) {
     res.render("index", {
       login: true,
-      nombre: req.session.name,
+      nombre: req.session.nombre,
     });
   } else {
     res.render("index", {
@@ -249,6 +251,14 @@ app.post("/eliminar-usuario", (req, res) => {
     }
 
     res.json({ ok: true });
+  });
+});
+
+// principal traer datos
+app.get("/principal", (req, res) => {
+  res.render("principal", {
+    nombre: req.session.nombre,
+    rol: req.session.rol,
   });
 });
 

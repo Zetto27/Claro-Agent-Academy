@@ -179,6 +179,10 @@ body {
   font-size: 0.82rem;
   font-weight: 700;
   line-height: 1.2;
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .sidebar-subtitulo {
   font-size: 0.7rem;
@@ -658,4 +662,26 @@ body {
   .contenido {
     padding-bottom: 90px;
   }
+}
+
+.submenu {
+  display: none;
+  flex-direction: column;
+  padding-left: 20px;
+}
+
+.submenu a {
+  padding: 8px 10px;
+  font-size: 14px;
+  color: #ccc;
+  text-decoration: none;
+}
+
+.submenu a:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 5px;
+}
+
+.desplegable {
+  cursor: pointer;
 }

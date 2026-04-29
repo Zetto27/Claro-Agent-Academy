@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Dashboard</title>
+    <title>Claro Agent Academy</title>
     <link rel="stylesheet" href="resources/css/index.css" />
   </head>
 
@@ -33,8 +33,12 @@
 
         <nav class="sidebar-nav">
           <a href="#" class="side-item activo" onclick="cargarVista('principal')">🏠 Inicio</a>
-          <a href="#" class="side-item" onclick="cargarVista('modulo1.html')">🏢 M1. Bienvenida</a>
-          <a href="#" class="side-item" onclick="cargarVista('modulo2.html')">📡 M2. Plataforma</a>
+          <div class="side-item desplegable" onclick="toggleSubmenu(this)">☎️ PBX Móvil</div>
+
+          <div class="submenu">
+            <a href="#" onclick="cargarVista('modulo1')">Bienvenida a Claro</a>
+            <a href="#" onclick="cargarVista('modulo2.html')">📗 Módulo 2</a>
+          </div>
           <a href="#" class="side-item" onclick="cargarVista('usuarios')">🧑🏻‍💻 Usuarios</a>
         </nav>
       </aside>
@@ -116,5 +120,16 @@
       };
     </script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+      function toggleSubmenu(elemento) {
+        const submenu = elemento.nextElementSibling;
+
+        if (submenu.style.display === "flex") {
+          submenu.style.display = "none";
+        } else {
+          submenu.style.display = "flex";
+        }
+      }
+    </script>
   </body>
 </html>

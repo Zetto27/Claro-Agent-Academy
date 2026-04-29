@@ -1,33 +1,58 @@
-<div class="bienvenida">
-  <h2>¡Hola, Jhon!</h2>
-  <p class="info">Agente Nuevo · Bogotá · Mañana 6am-2pm</p>
-</div>
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Claro Agent Academy</title>
 
-<div class="progreso-card">
-  <div class="numero">0/5</div>
-  <div class="texto">módulos completados</div>
-</div>
+    <!-- CSS -->
+    <link rel="stylesheet" href="styles.css" />
+  </head>
 
-<p class="seccion-titulo">Módulos</p>
+  <body>
+    <main class="contenido">
+      <!-- Bienvenida -->
+      <div class="bienvenida">
+        <h2>
+          ¡Hola,
+          <strong><%= nombre %></strong>
+          !
+        </h2>
+        <p class="info"><%= rol %></p>
+      </div>
 
-<div class="modulo-card activo">
-  <div class="modulo-emoji">🏢</div>
-  <div class="modulo-info">
-    <h3>M1. Bienvenida a Claro</h3>
-  </div>
-  <span class="modulo-estado estado-activo">▶ INICIAR</span>
-</div>
+      <!-- Progreso -->
+      <div class="progreso-card">
+        <div class="numero">0/5</div>
+        <div class="texto">módulos completados</div>
+      </div>
 
-<div class="modulo-card bloqueado">M2. PBX Móvil</div>
-<div class="modulo-card bloqueado">M3. Fallas</div>
-<div class="modulo-card bloqueado">M4. Scripts</div>
-<div class="modulo-card bloqueado">M5. Evaluación</div>
+      <!-- Módulos -->
+      <p class="seccion-titulo">Módulos</p>
 
-<p class="seccion-titulo">Insignias</p>
-<div class="insignias-card">
-  <div class="insignias-grid">
-    <div class="insignia">🔒 M1</div>
-    <div class="insignia">🔒 M2</div>
-    <div class="insignia">🔒 M3</div>
-  </div>
-</div>
+      <div class="modulo-card activo">
+        <div class="modulo-emoji">🏢</div>
+        <div class="modulo-info">
+          <h3>Bienvenida a Claro</h3>
+        </div>
+        <span class="modulo-estado estado-activo">▶ INICIAR</span>
+      </div>
+
+      <div class="modulo-card bloqueado">M2. PBX Móvil</div>
+      <div class="modulo-card bloqueado">M3. Fallas</div>
+      <div class="modulo-card bloqueado">M4. Scripts</div>
+      <div class="modulo-card bloqueado">M5. Evaluación</div>
+
+      <!-- Insignias -->
+      <p class="seccion-titulo">Insignias</p>
+
+      <div class="insignias-card">
+        <div class="insignias-grid">
+          <div class="insignia">🔒 M1</div>
+          <div class="insignia">🔒 M2</div>
+          <div class="insignia">🔒 M3</div>
+        </div>
+      </div>
+    </main>
+  </body>
+</html>
