@@ -24,7 +24,7 @@
           <div class="sidebar-logo">CA</div>
           <div>
             <!-- nombre dinamico -->
-            <div class="sidebar-titulo">ClaroAgent</div>
+            <div class="sidebar-titulo"><strong><%= nombre %></strong></div>
             <div class="sidebar-subtitulo">PBX Móvil</div>
           </div>
         </div>
@@ -35,7 +35,7 @@
           <a href="#" class="side-item activo" onclick="cargarVista('principal')">🏠 Inicio</a>
           <a href="#" class="side-item" onclick="cargarVista('modulo1.html')">🏢 M1. Bienvenida</a>
           <a href="#" class="side-item" onclick="cargarVista('modulo2.html')">📡 M2. Plataforma</a>
-          <a href="#" class="side-item" onclick="cargarVista('usuarios')">🧑🏻‍💻 usuarios</a>
+          <a href="#" class="side-item" onclick="cargarVista('usuarios')">🧑🏻‍💻 Usuarios</a>
         </nav>
       </aside>
 
@@ -77,10 +77,44 @@
           });
       }
 
+      /* Eliminar usuario */
+      async function eliminarUsuario(id) {
+        const result = await Swal.fire({
+          title: "¿Eliminar usuario?",
+          text: "Esta acción no se puede deshacer",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonText: "Sí, eliminar",
+        });
+
+        if (!result.isConfirmed) return;
+
+        const res = await fetch("/eliminar-usuario", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ id }),
+        });
+
+        const data = await res.json();
+
+        if (data.ok) {
+          Swal.fire("Eliminado", "Usuario eliminado", "success");
+
+          setTimeout(() => {
+            cargarVista("/usuarios");
+          }, 800);
+        } else {
+          Swal.fire("Error", data.error, "error");
+        }
+      }
+
       /* Cargar dashboard por defecto */
       window.onload = function () {
         cargarVista("principal");
       };
     </script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   </body>
 </html>

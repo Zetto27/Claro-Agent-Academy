@@ -135,6 +135,7 @@ app.get("/usuarios", async (req, res) => {
   try {
     const [rows] = await connnection.promise().query(`
       SELECT 
+        u.id_usuario,
         u.nombre,
         u.usuario,
         u.correo,
@@ -151,6 +152,104 @@ app.get("/usuarios", async (req, res) => {
     console.log(error);
     res.send("Error al cargar usuarios");
   }
+});
+
+// autenticaion
+app.post("/auth", async (req, res) => {
+  const usuario = req.body.usuario;
+  const contrasena = req.body.contrasena;
+
+  // 🔒 Validación
+  if (!usuario || !contrasena) {
+    return res.render("login", {
+      alert: true,
+      alertTitle: "Error",
+      alertMessage: "Ingresa un usuario y contraseña",
+      alertIcon: "error",
+      showConfirmButton: true,
+      timer: false,
+      ruta: "login",
+    });
+  }
+
+  connnection.query("SELECT * FROM usuarios WHERE usuario = ?", [usuario], async (error, results) => {
+    if (error) {
+      console.log(error);
+      return res.send("Error en el servidor");
+    }
+
+    // ❌ usuario no existe
+    if (results.length === 0) {
+      return res.render("login", {
+        alert: true,
+        alertTitle: "Error",
+        alertMessage: "Usuario y/o contraseña incorrecta",
+        alertIcon: "error",
+        showConfirmButton: true,
+        timer: false,
+        ruta: "login",
+      });
+    }
+
+    // 🔐 comparar contraseña
+    const valido = await bcryptjs.compare(contrasena, results[0].contrasena);
+
+    if (!valido) {
+      return res.render("login", {
+        alert: true,
+        alertTitle: "Error",
+        alertMessage: "Usuario y/o contraseña incorrecta",
+        alertIcon: "error",
+        showConfirmButton: true,
+        timer: false,
+        ruta: "login",
+      });
+    }
+
+    // ✅ login correcto
+    req.session.loggedin = true; // 🔥 era res.session ❌
+    req.session.name = results[0].nombre;
+
+    res.render("login", {
+      alert: true,
+      alertTitle: "Login",
+      alertMessage: "¡Login correcto!",
+      alertIcon: "success",
+      showConfirmButton: false,
+      timer: 1500,
+      ruta: "",
+    });
+  });
+});
+
+// autenticación para rutas privadas
+app.get("/", (req, res) => {
+  if (req.session.loggedin) {
+    res.render("index", {
+      login: true,
+      nombre: req.session.name,
+    });
+  } else {
+    res.render("index", {
+      login: false,
+      nombre: "Debe iniciar sesión",
+    });
+  }
+});
+
+// eliminar usuario
+
+app.post("/eliminar-usuario", (req, res) => {
+  const id = req.body.id;
+
+  connnection.query("DELETE FROM usuarios WHERE id_usuario = ?", [id], (error) => {
+    if (error) {
+      console.log(error);
+      return res.json({ ok: false, error: "Error al eliminar" });
+    }
+
+    res.json({ ok: true });
+  });
 });
 
 // const PORT = process.env.PORT || 3000;

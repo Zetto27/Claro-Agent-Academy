@@ -23,39 +23,86 @@
 <div class="tabla-wrapper">
   <table class="tabla-usuarios">
 
-    <thead>
-      <tr>
-        <th>Nombre</th>
-        <th>Usuario</th>
-        <th>Rol</th>
-        <th>Correo</th>
-        <th>Cédula</th>
-        <th>Teléfono</th>
-        <th>Fecha</th>
-      </tr>
-    </thead>
+<thead>
+  <tr>
+    <th>Nombre</th>
+    <th>Usuario</th>
+    <th>Rol</th>
+    <th>Correo</th>
+    <th>Cédula</th>
+    <th>Teléfono</th>
+    <th>Fecha</th>
+    <th>Acciones</th> <!-- 🔥 NUEVO -->
+  </tr>
+</thead>
 
-    <tbody>
-      <% usuarios.forEach(user => { %>
-        <tr>
-          <td class="nombre"><%= user.nombre %></td>
-          <td><%= user.usuario %></td>
-          <td><%= user.nombre_rol %></td>
-          <td class="correo"><%= user.correo %></td>
-          <td><%= user.cedula %></td>
-          <td><%= user.telefono %></td>
-          <td class="fecha">
-            <%= new Date(user.fecha_registro).toLocaleString() %>
-          </td>
-        </tr>
-      <% }) %>
-    </tbody>
+<tbody>
+  <% usuarios.forEach(user => { %>
+    <tr>
+      <td class="nombre"><%= user.nombre %></td>
+      <td><%= user.usuario %></td>
+      <td><%= user.nombre_rol %></td>
+      <td class="correo"><%= user.correo %></td>
+      <td><%= user.cedula %></td>
+      <td><%= user.telefono %></td>
+      <td class="fecha">
+        <%= new Date(user.fecha_registro).toLocaleString() %>
+      </td>
 
+      <!-- 🔥 BOTÓN ELIMINAR -->
+      <td>
+        <button class="btn-eliminar" name="usuario" onclick="eliminarUsuario(<%= user.id_usuario %>)">
+          Eliminar
+        </button>
+      </td>
+    </tr>
+  <% }) %>
+</tbody>
   </table>
 </div>
 
   </div>
 </div>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
+<script>
+function eliminarUsuario(id) {
+  console.log("CLICK eliminar:", id);
+
+  Swal.fire({
+    title: "¿Eliminar usuario?",
+    text: "Esta acción no se puede deshacer",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonText: "Sí, eliminar",
+    cancelButtonText: "Cancelar"
+  }).then(async (result) => {
+
+    if (result.isConfirmed) {
+
+      const res = await fetch("/eliminar-usuario", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ id })
+      });
+
+      const data = await res.json();
+
+      if (data.ok) {
+        Swal.fire("Eliminado", "Usuario eliminado correctamente", "success");
+
+        setTimeout(() => {
+          cargarVista("/usuarios");
+        }, 800);
+
+      } else {
+        Swal.fire("Error", data.error, "error");
+      }
+    }
+  });
+}
+</script>
 </body>
 </html>
