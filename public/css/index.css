@@ -332,9 +332,10 @@ body {
 ══════════════════════════════ */
 .contenido {
   flex: 1;
-  max-width: 680px;
+  width: 100%;
+  padding: 20px 30px;
+  overflow-y: auto;
   margin: 0 auto;
-  padding: 20px 16px 80px;
   transition: margin-left var(--transition);
 }
 

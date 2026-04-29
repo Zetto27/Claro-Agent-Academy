@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Usuarios</title>
+  <link rel="stylesheet" href="/resources/css/usuarios.css">
+</head>
+<body>
+
+<div class="content">
+  <div class="card">
+
+    <div class="card-header">
+      <h2>Usuarios registrados</h2>
+    </div>
+
+    <!-- BOTÓN -->
+    <div style="padding: 20px;">
+        <button class="btn-guardar" onclick="cargarVista('/registro')" >+ Agregar usuario</button>
+    </div>
+
+    <!-- TABLA -->
+<div class="tabla-wrapper">
+  <table class="tabla-usuarios">
+
+    <thead>
+      <tr>
+        <th>Nombre</th>
+        <th>Usuario</th>
+        <th>Rol</th>
+        <th>Correo</th>
+        <th>Cédula</th>
+        <th>Teléfono</th>
+        <th>Fecha</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% usuarios.forEach(user => { %>
+        <tr>
+          <td class="nombre"><%= user.nombre %></td>
+          <td><%= user.usuario %></td>
+          <td><%= user.nombre_rol %></td>
+          <td class="correo"><%= user.correo %></td>
+          <td><%= user.cedula %></td>
+          <td><%= user.telefono %></td>
+          <td class="fecha">
+            <%= new Date(user.fecha_registro).toLocaleString() %>
+          </td>
+        </tr>
+      <% }) %>
+    </tbody>
+
+  </table>
+</div>
+
+  </div>
+</div>
+
+</body>
+</html>

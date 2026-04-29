@@ -1,0 +1,344 @@
+/* =========================================
+   ClaroAgent Academy — Registro
+   registro.css
+   Proyecto SENA 2025 — Karen Páez
+   ========================================= */
+
+/* --- Reset & Base --- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: "Nunito", sans-serif;
+  min-height: 100vh;
+  background: #f2f2f2;
+  display: flex;
+  flex-direction: column;
+}
+
+/* --- Navbar --- */
+.navbar {
+  background: #dc1e32;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 0 20px;
+  height: 52px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.navbar-menu {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  cursor: pointer;
+}
+
+.navbar-menu span {
+  display: block;
+  width: 20px;
+  height: 2px;
+  background: #fff;
+  border-radius: 2px;
+}
+
+.navbar-title {
+  color: #fff;
+  font-size: 15px;
+  font-weight: 800;
+  letter-spacing: 0.2px;
+}
+
+/* --- Aviso / Toast --- */
+.aviso {
+  position: fixed;
+  top: 64px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 999;
+  padding: 10px 22px;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 13px;
+  display: none;
+  white-space: nowrap;
+  animation: slideDown 0.3s ease;
+}
+
+.aviso.exito {
+  background: #e6f9ef;
+  color: #1a7a4a;
+  border: 1px solid #a3e4be;
+  display: block;
+}
+
+.aviso.error {
+  background: #fdecea;
+  color: #c0392b;
+  border: 1px solid #f5b3ad;
+  display: block;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+/* --- Layout contenido --- */
+.content {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px 16px;
+}
+
+/* --- Card principal --- */
+.card {
+  background: #fff;
+  border-radius: 14px;
+  width: 100%;
+  max-width: 480px;
+  box-shadow: 0 2px 16px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+}
+
+/* --- Encabezado de la card --- */
+.card-header {
+  border-left: 4px solid #dc1e32;
+  padding: 20px 24px 18px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.card-header h2 {
+  font-size: 19px;
+  font-weight: 800;
+  color: #222;
+  margin-bottom: 3px;
+}
+
+.card-header p {
+  font-size: 12px;
+  color: #999;
+  font-weight: 600;
+}
+
+/* --- Formulario --- */
+.login-form {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* --- Campo individual --- */
+.campo {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.campo label {
+  font-size: 11px;
+  font-weight: 800;
+  color: #888;
+  text-transform: uppercase;
+  letter-spacing: 0.7px;
+}
+
+/* --- Input wrapper con icono --- */
+.input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.input-icon {
+  position: absolute;
+  left: 13px;
+  color: #bbb;
+  display: flex;
+  align-items: center;
+  pointer-events: none;
+  transition: color 0.2s;
+}
+
+.input-wrapper:focus-within .input-icon {
+  color: #dc1e32;
+}
+
+.input-wrapper input {
+  width: 100%;
+  background: #fafafa;
+  border: 1.5px solid #e8e8e8;
+  border-radius: 10px;
+  padding: 11px 14px 11px 40px;
+  color: #222;
+  font-family: "Nunito", sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  outline: none;
+  transition:
+    border-color 0.2s,
+    background 0.2s,
+    box-shadow 0.2s;
+}
+
+.input-wrapper input::placeholder {
+  color: #ccc;
+}
+
+.input-wrapper input:focus {
+  border-color: #dc1e32;
+  background: #fff;
+  box-shadow: 0 0 0 3px rgba(220, 30, 50, 0.08);
+}
+
+.input-wrapper input.invalido {
+  border-color: #e74c3c;
+  box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.08);
+}
+
+/* --- Mensajes de error --- */
+.error-msg {
+  font-size: 11px;
+  color: #e74c3c;
+  font-weight: 700;
+  margin-top: 2px;
+  display: none;
+}
+
+/* --- Grupo de botones --- */
+.btn-group {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 4px;
+}
+
+/* --- Botón Guardar --- */
+.btn-guardar {
+  background: #dc1e32;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  padding: 12px 20px;
+  font-family: "Nunito", sans-serif;
+  font-size: 14px;
+  font-weight: 800;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  transition:
+    background 0.2s,
+    transform 0.1s,
+    box-shadow 0.2s;
+  box-shadow: 0 3px 10px rgba(220, 30, 50, 0.25);
+}
+
+.btn-guardar:hover {
+  background: #b8192a;
+  box-shadow: 0 4px 14px rgba(220, 30, 50, 0.35);
+}
+
+.btn-guardar:active {
+  transform: scale(0.98);
+}
+
+/* --- Botón Cancelar --- */
+.btn-cancelar {
+  background: #fff;
+  color: #888;
+  border: 1.5px solid #e0e0e0;
+  border-radius: 10px;
+  padding: 12px 20px;
+  font-family: "Nunito", sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition:
+    border-color 0.2s,
+    color 0.2s,
+    background 0.2s;
+}
+
+.btn-cancelar:hover {
+  border-color: #bbb;
+  color: #444;
+  background: #fafafa;
+}
+
+/* --- Pie de la card --- */
+.card-footer {
+  text-align: center;
+  padding: 14px 24px 20px;
+  font-size: 11px;
+  color: #bbb;
+  font-weight: 600;
+  border-top: 1px solid #f0f0f0;
+}
+
+/* --- Responsive --- */
+@media (max-width: 520px) {
+  .card {
+    border-radius: 10px;
+  }
+
+  .card-header,
+  .login-form {
+    padding: 18px 18px;
+  }
+
+  .btn-group {
+    grid-template-columns: 1fr;
+  }
+}
+.input-wrapper select {
+  width: 100%;
+  background: #fafafa;
+  border: 1.5px solid #e8e8e8;
+  border-radius: 10px;
+  padding: 11px 14px 11px 40px;
+  font-family: "Nunito", sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  outline: none;
+}
+
+.input-wrapper input,
+.input-wrapper select {
+  background: #fff; /* blanco real */
+  color: #222; /* texto oscuro */
+  opacity: 1; /* quita efecto apagado */
+}
+
+/* Placeholder más claro pero no apagado */
+.input-wrapper input::placeholder {
+  color: #bbb;
+  opacity: 1;
+}
+
+/* Quitar estilo gris del select */
+.input-wrapper select {
+  appearance: none;
+  -webkit-appearance: none;
+  background: #fff;
+  color: #bbb;
+}
