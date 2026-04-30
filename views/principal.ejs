@@ -21,6 +21,17 @@
         <p class="info"><%= rol %></p>
       </div>
 
+      <div class="progreso-box">
+        <h3>Tu progreso</h3>
+
+        <div class="barra">
+          <div class="barra-fill" style="width: <%= porcentaje %>%"></div>
+        </div>
+
+        <p><%= porcentaje %>% completado</p>
+        <p><%= completados %> de <%= total %> módulos</p>
+      </div>
+
       <!-- Progreso 
       <div class="progreso-card">
         <div class="numero">0/5</div>
@@ -29,33 +40,36 @@
       -->
 
       <!-- Módulos -->
-      <p class="seccion-titulo">Cursos asignados</p>
 
-      <div class="modulo-card activo">
-        <div class="modulo-emoji">🏢</div>
-        <div class="modulo-info">
-          <h3>PBX Móvil</h3>
-        </div>
-        <span class="modulo-estado estado-activo">
-          <a class="modulo-estado estado-activo" href="/modulo1">▶ INICIAR</a>
-        </span>
-      </div>
 
-      <div class="modulo-card bloqueado">Tornado</div>
-      <div class="modulo-card bloqueado">Mensajería Masiva</div>
-      <div class="modulo-card bloqueado">Aranda</div>
-      <div class="modulo-card bloqueado">Claro Directo</div>
 
-      <!-- Insignias -->
-      <p class="seccion-titulo">Insignias</p>
+      <div class="modulos">
 
-      <div class="insignias-card">
-        <div class="insignias-grid">
-          <div class="insignia">🔒 M1</div>
-          <div class="insignia">🔒 M2</div>
-          <div class="insignia">🔒 M3</div>
-        </div>
-      </div>
+  <% modulos.forEach(m => { %>
+
+    <div class="modulo-card <%= m.desbloqueado ? '' : 'bloqueado' %>">
+
+      <h4><%= m.titulo %></h4>
+
+      <% if (m.aprobado) { %>
+        <span class="estado aprobado">✅ Completado</span>
+      <% } else if (m.desbloqueado) { %>
+        <span class="estado pendiente">🟡 Disponible</span>
+      <% } else { %>
+        <span class="estado bloqueado">🔒 Bloqueado</span>
+      <% } %>
+
+      <% if (m.desbloqueado) { %>
+        <a class="modulo-estado estado-activo" href="/modulo/<%= m.id_modulo %>">Entrar</a>
+      <% } %>
+
+    </div>
+
+  <% }) %>
+
+</div>
+
+      
     </main>
   </body>
 </html>

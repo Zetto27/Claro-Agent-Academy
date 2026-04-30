@@ -2,3 +2,49 @@
   font-weight: normal;
   text-decoration: none;
 }
+.progreso-box {
+  margin-bottom: 20px;
+}
+
+.barra {
+  width: 100%;
+  height: 10px;
+  background: #ddd;
+  border-radius: 10px;
+  overflow: hidden;
+  margin: 10px 0;
+}
+
+.barra-fill {
+  height: 100%;
+  background: #22c55e;
+}
+
+.modulo-card {
+  padding: 15px;
+  border: 1px solid #ccc;
+  margin: 10px 0;
+  border-radius: 10px;
+}
+
+.bloqueado {
+  opacity: 0.5;
+}
+
+.estado {
+  display: block;
+  margin: 5px 0;
+  font-weight: bold;
+}
+
+.aprobado {
+  color: green;
+}
+
+.pendiente {
+  color: orange;
+}
+
+.bloqueado {
+  color: red;
+}

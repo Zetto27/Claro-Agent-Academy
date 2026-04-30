@@ -262,39 +262,71 @@ app.post("/eliminar-usuario", (req, res) => {
 });
 
 // principal traer datos
-app.get("/principal", (req, res) => {
-  res.render("principal", {
-    nombre: req.session.nombre,
-    rol: req.session.rol,
-  });
-});
-
-// traer datos de modulo 1
-
-app.get("/modulo1", async (req, res) => {
+app.get("/principal", async (req, res) => {
   try {
-    // 🔹 traer módulo
-    const [modulo] = await connnection.promise().query("SELECT * FROM modulos WHERE id_modulo = 1");
+    const id_usuario = req.session.id_usuario;
 
-    // 🔹 traer contenidos
-    const [contenidos] = await connnection.promise().query("SELECT * FROM contenidos WHERE id_modulo = 1");
+    if (!id_usuario) {
+      return res.redirect("/login");
+    }
 
-    // 🔹 buscar contenido 1 y 2
-    const contenido1 = contenidos.find((c) => c.id_contenido === 1);
-    const contenido2 = contenidos.find((c) => c.id_contenido === 2);
+    // 🔹 TODOS LOS MÓDULOS
+    const [modulos] = await connnection.promise().query("SELECT * FROM modulos ORDER BY orden_modulo");
 
-    // 🔹 enviar a la vista
-    res.render("modulo1", {
-      titulo: modulo[0].titulo,
-      descripcion: modulo[0].descripcion,
-      contenido1: contenido1,
-      contenido2: contenido2,
+    // 🔹 MÓDULOS APROBADOS
+    const [aprobados] = await connnection.promise().query(
+      `
+      SELECT DISTINCT e.id_modulo
+      FROM intentos i
+      JOIN evaluaciones e ON i.id_evaluacion = e.id_evaluacion
+      WHERE i.id_usuario = ? AND i.aprobado = 1
+    `,
+      [id_usuario],
+    );
+
+    const modulosAprobados = aprobados.map((m) => m.id_modulo);
+
+    // 🔹 CALCULAR PROGRESO
+    const total = modulos.length;
+    const completados = modulosAprobados.length;
+
+    const porcentaje = total > 0 ? Math.round((completados / total) * 100) : 0;
+
+    // 🔹 DESBLOQUEO
+    const modulosConEstado = modulos.map((m, index) => {
+      const aprobado = modulosAprobados.includes(m.id_modulo);
+
+      let desbloqueado = false;
+
+      if (index === 0) {
+        desbloqueado = true;
+      } else {
+        const anterior = modulos[index - 1];
+        desbloqueado = modulosAprobados.includes(anterior.id_modulo);
+      }
+
+      return {
+        ...m,
+        aprobado,
+        desbloqueado,
+      };
+    });
+
+    // 🔥 AQUÍ NO PIERDES TU ROL
+    res.render("principal", {
+      nombre: req.session.nombre,
+      rol: req.session.rol,
+      modulos: modulosConEstado,
+      porcentaje,
+      completados,
+      total,
     });
   } catch (error) {
     console.log(error);
-    res.send("Error");
+    res.send("Error cargando progreso");
   }
 });
+// traer datos de modulo 1
 
 // traer datos de modulo 2
 app.get("/modulo2", async (req, res) => {

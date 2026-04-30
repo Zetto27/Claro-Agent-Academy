@@ -50,6 +50,9 @@ router.get("/modulo/:id", async (req, res) => {
     console.log("PREGUNTAS:", preguntas);
     console.log("OPCIONES:", opciones);
     console.log("EVALUACION BACK:", evaluacion);
+
+    const [totalModulos] = await db.query("SELECT COUNT(*) as total FROM modulos");
+
     // 🔥 RENDER (MUY IMPORTANTE)
     res.render("modulo1", {
       modulo: modulo[0], // ⚠️ NO array
@@ -57,6 +60,8 @@ router.get("/modulo/:id", async (req, res) => {
       evaluacion: evaluacion[0] || null,
       preguntas,
       opciones,
+      totalModulos: totalModulos[0].total, // 🔥 nuevo
+      numeroModulo: parseInt(id), // 🔥 nuevo
     });
   } catch (error) {
     console.error(error);
@@ -131,13 +136,6 @@ router.post("/guardar-intento", async (req, res) => {
       ok: true,
       puntaje,
       aprobado,
-      intento_actual: intentosPrevios.length + 1,
-      limite: LIMITE_INTENTOS,
-    });
-
-    res.json({
-      ok: true,
-      puntaje,
       intento_actual: intentosPrevios.length + 1,
       limite: LIMITE_INTENTOS,
     });
