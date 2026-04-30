@@ -126,17 +126,28 @@ body {
 .acordeon-btn:hover {
   background: var(--gris-fondo);
 }
+.acordeon.activo .acordeon-cuerpo {
+  max-height: 500px; /* ajusta si quieres */
+}
 .acordeon-btn .flecha {
   margin-left: auto;
   transition: transform 0.3s;
 }
+
+.acordeon.activo .flecha {
+  transform: rotate(180deg);
+}
 .acordeon-btn.abierto .flecha {
   transform: rotate(180deg);
+}
+
+.flecha {
+  transition: transform 0.3s ease;
 }
 .acordeon-cuerpo {
   max-height: 0;
   overflow: hidden;
-  transition: max-height 0.3s;
+  transition: max-height 0.3s ease;
 }
 .acordeon-inner {
   padding: 0 16px 16px;
@@ -406,4 +417,7 @@ body {
 .nav-item svg {
   width: 20px;
   height: 20px;
+}
+.resultado {
+  display: none;
 }

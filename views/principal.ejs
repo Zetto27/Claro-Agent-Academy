@@ -6,7 +6,7 @@
     <title>Claro Agent Academy</title>
 
     <!-- CSS -->
-    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="resources/css/principal.css" />
   </head>
 
   <body>
@@ -21,29 +21,32 @@
         <p class="info"><%= rol %></p>
       </div>
 
-      <!-- Progreso -->
+      <!-- Progreso 
       <div class="progreso-card">
         <div class="numero">0/5</div>
         <div class="texto">módulos completados</div>
       </div>
+      -->
 
       <!-- Módulos -->
-      <p class="seccion-titulo">Módulos</p>
+      <p class="seccion-titulo">Cursos asignados</p>
 
       <div class="modulo-card activo">
         <div class="modulo-emoji">🏢</div>
         <div class="modulo-info">
-          <h3>Bienvenida a Claro</h3>
+          <h3>PBX Móvil</h3>
         </div>
-        <span class="modulo-estado estado-activo">▶ INICIAR</span>
+        <span class="modulo-estado estado-activo">
+          <a class="modulo-estado estado-activo" href="/modulo1">▶ INICIAR</a>
+        </span>
       </div>
 
-      <div class="modulo-card bloqueado">M2. PBX Móvil</div>
-      <div class="modulo-card bloqueado">M3. Fallas</div>
-      <div class="modulo-card bloqueado">M4. Scripts</div>
-      <div class="modulo-card bloqueado">M5. Evaluación</div>
+      <div class="modulo-card bloqueado">Tornado</div>
+      <div class="modulo-card bloqueado">Mensajería Masiva</div>
+      <div class="modulo-card bloqueado">Aranda</div>
+      <div class="modulo-card bloqueado">Claro Directo</div>
 
-      <!-- Insignias -->
+      <!-- Insignias 
       <p class="seccion-titulo">Insignias</p>
 
       <div class="insignias-card">
@@ -53,6 +56,7 @@
           <div class="insignia">🔒 M3</div>
         </div>
       </div>
+      -->
     </main>
   </body>
 </html>

@@ -4,33 +4,22 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Módulo 1 — Bienvenida | ClaroAgent Academy</title>
-    <link rel="stylesheet" href="resources/css/modulo1.css" />
+    <link rel="stylesheet" href="../resources/css/modulo1.css" />
   </head>
   <body>
-    <header class="mod-header">
-      <div class="mod-header-top">
-        <button class="btn-volver" onclick="location.href = '/'">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-            <polyline points="15 18 9 12 15 6" />
-          </svg>
-        </button>
-        <h1><h1>modulo 1</h1></h1>
-        <span class="emoji">🏢</span>
-      </div>
-      <div class="mod-barra"><div class="mod-barra-fill" id="barraModulo"></div></div>
-    </header>
-
+    <% const contenido1 = contenido[0]; %>
+<% const contenido2 = contenido[1]; %>
     <main class="contenido">
       <div class="intro">
         <span class="etiqueta">Módulo 1 de 5</span>
-        <h2>Bienvenida a Claro y el Contact Center</h2>
-        <p>Conoce la empresa, tu rol como agente y las reglas básicas que debes seguir.</p>
+        <h2><%= modulo.titulo %></h2>
+        <p><%= modulo.descripcion %></p>
       </div>
 
       <!-- Sección 1 -->
       <div class="acordeon" data-sec="1">
         <button class="acordeon-btn">
-          🏢 Claro Colombia y tu rol
+          <h4>🏢 <%= contenido1.titulo %></h4>
           <svg
             class="flecha"
             width="14"
@@ -44,57 +33,17 @@
         </button>
         <div class="acordeon-cuerpo">
           <div class="acordeon-inner">
-            <p>
-              <strong>Claro Colombia</strong>
-              es la operadora de telecomunicaciones más grande del país. Hace parte del Grupo América Móvil y ofrece
-              servicios de telefonía móvil, internet, televisión y soluciones empresariales como el PBX Móvil.
-            </p>
-            <p>
-              Como
-              <strong>agente de contact center</strong>
-              , tú eres la voz de Claro ante el cliente. Tus responsabilidades principales son:
-            </p>
-            <ul>
-              <li>
-                <strong>Resolver en el primer contacto:</strong>
-                intenta solucionar sin transferir la llamada
-              </li>
-              <li>
-                <strong>Documentar todo:</strong>
-                registra cada caso en el sistema
-              </li>
-              <li>
-                <strong>Escalar cuando sea necesario:</strong>
-                si no puedes resolver en 20-60 minutos, pasa el caso al nivel 2 con toda la información
-              </li>
-            </ul>
-            <p>
-              La estructura del equipo es:
-              <strong>Agente → Supervisor → Analista de Calidad → Coordinador</strong>
-              .
-            </p>
+            <%- contenido1.descripcion %>
           </div>
-
-          <!-- Pregunta 1 -->
-          <div class="pregunta" data-correct="1" data-id-pregunta="1">
-            <div class="opcion" data-v="0" data-id-opcion="1" onclick="elegirQuiz(this)">Grupo Telefónica</div>
-            <div class="opcion" data-v="1" data-id-opcion="2" onclick="elegirQuiz(this)">Grupo América Móvil</div>
-            <div class="opcion" data-v="2" data-id-opcion="3" onclick="elegirQuiz(this)">Grupo Movistar</div>
-          </div>
-
-          <!-- Pregunta 2 -->
-          <div class="pregunta" data-correct="0" data-id-pregunta="2">
-            <div class="opcion" data-v="0" data-id-opcion="4" onclick="elegirQuiz(this)">Hasta las 3:00 pm</div>
-            <div class="opcion" data-v="1" data-id-opcion="5" onclick="elegirQuiz(this)">Hasta las 7:00 pm</div>
-            <div class="opcion" data-v="2" data-id-opcion="6" onclick="elegirQuiz(this)">No se puede los sábados</div>
-          </div>
-        </div>
+          </div>  
       </div>
+
+
 
       <!-- Sección 2 -->
       <div class="acordeon" data-sec="2">
         <button class="acordeon-btn">
-          ⚖️ Reglas legales básicas
+          <h4>⚖️<%= contenido2.titulo %></h4>
           <svg
             class="flecha"
             width="14"
@@ -132,52 +81,47 @@
       </div>
 
       <!-- Quiz -->
-      <div class="eval-card" id="quizCard">
+      <div class="eval-card">
         <h3>📝 Quiz — Módulo 1</h3>
         <p class="desc">Responde las 2 preguntas y presiona "Evaluar".</p>
+        <div id="quizCard" data-evaluacion="<%= evaluacion ? evaluacion.id_evaluacion : '' %>">
 
-        <div class="pregunta" data-correct="1">
-          <p>1. ¿A qué grupo pertenece Claro Colombia?</p>
-          <div class="opciones">
-            <div class="opcion" data-v="0" onclick="elegirQuiz(this)">
-              <span class="bolita"></span>
-              Grupo Telefónica
-            </div>
-            <div class="opcion" data-v="1" onclick="elegirQuiz(this)">
-              <span class="bolita"></span>
-              Grupo América Móvil
-            </div>
-            <div class="opcion" data-v="2" onclick="elegirQuiz(this)">
-              <span class="bolita"></span>
-              Grupo Movistar
-            </div>
-          </div>
-          <div class="retroalimentacion" id="fb1"></div>
+<% preguntas.forEach((p, i) => { %>
+
+  <div class="pregunta" data-id="<%= p.id_pregunta %>">
+
+    <p><%= (i + 1) + ". " + p.enunciado %></p>
+
+    <div class="opciones">
+
+      <% opciones
+        .filter(o => o.id_pregunta === p.id_pregunta)
+        .forEach(o => { %>
+
+        <div class="opcion"
+             data-id="<%= o.id_opcion %>"
+             data-correcta="<%= o.es_correcta %>"
+             onclick="elegirQuiz(this)">
+
+          <span class="bolita"></span>
+          <%= o.texto %>
+
         </div>
 
-        <div class="pregunta" data-correct="0">
-          <p>2. ¿Hasta qué hora puedes llamar clientes un sábado?</p>
-          <div class="opciones">
-            <div class="opcion" data-v="0" onclick="elegirQuiz(this)">
-              <span class="bolita"></span>
-              Hasta las 3:00 pm
-            </div>
-            <div class="opcion" data-v="1" onclick="elegirQuiz(this)">
-              <span class="bolita"></span>
-              Hasta las 7:00 pm
-            </div>
-            <div class="opcion" data-v="2" onclick="elegirQuiz(this)">
-              <span class="bolita"></span>
-              No se puede los sábados
-            </div>
-          </div>
-          <div class="retroalimentacion" id="fb2"></div>
-        </div>
+      <% }) %>
+
+    </div>
+
+  </div>
+
+<% }) %>
+</div>
 
         <button class="btn-evaluar" id="btnQuiz" onclick="evaluarQuiz()">Evaluar</button>
-        <div class="resultado" id="resQuiz">
-          <div class="puntaje" id="puntajeQuiz">0/100</div>
-          <div class="etiqueta-res" id="etiquetaQuiz"></div>
+<div class="resultado" id="resQuiz">
+  <div class="puntaje" id="puntajeQuiz">0/100%</div>
+  <div class="etiqueta-res" id="etiquetaQuiz"></div>
+</div>
           <button class="btn-reintentar" id="btnReintentar" onclick="reiniciarQuiz()" style="display: none">
             Reintentar
           </button>
@@ -237,7 +181,7 @@
         </svg>
         Módulo 1
       </a>
-      <a class="nav-item" href="modulo2.html">
+      <a class="nav-item" href="modulo2">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <polyline points="9 18 15 12 9 6" />
         </svg>
@@ -246,235 +190,100 @@
     </nav>
 
     <script>
-      /* Verificar sesión */
-      (function () {
-        fetch("/api/check-session")
-          .then(function (res) {
-            return res.json();
-          })
-          .then(function (data) {
-            if (!data.loggedin) location.href = "login";
-          });
-      })();
+      document.querySelectorAll(".acordeon-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
 
-      var MOD = 0,
-        MIN_PUNTAJE = 60,
-        MAX_INT = 3,
-        intentos = 0,
-        quizOk = false,
-        casoOk = false;
-      var totalSec = 2,
-        secAbiertas = new Set();
+    const acordeon = btn.parentElement;
 
-      /* Acordeones */
-      document.querySelectorAll(".acordeon-btn").forEach(function (b) {
-        b.addEventListener("click", function () {
-          var cuerpo = this.nextElementSibling;
-          if (this.classList.contains("abierto")) {
-            this.classList.remove("abierto");
-            cuerpo.style.maxHeight = null;
-          } else {
-            this.classList.add("abierto");
-            cuerpo.style.maxHeight = cuerpo.scrollHeight + "px";
-            var s = this.closest(".acordeon").getAttribute("data-sec");
-            secAbiertas.add(s);
-            actualizarBarra();
-          }
-        });
-      });
-
-      function actualizarBarra() {
-        var lec = (secAbiertas.size / totalSec) * 50;
-        var q = quizOk ? 25 : 0;
-        var c = casoOk ? 25 : 0;
-        document.getElementById("barraModulo").style.width = Math.round(lec + q + c) + "%";
+    // cerrar otros (opcional tipo profesional)
+    document.querySelectorAll(".acordeon").forEach(a => {
+      if (a !== acordeon) {
+        a.classList.remove("activo");
       }
+    });
 
-      /* Quiz */
+    // toggle actual
+    acordeon.classList.toggle("activo");
+  });
+});
+
       function elegirQuiz(el) {
-        el.closest(".pregunta")
-          .querySelectorAll(".opcion")
-          .forEach(function (o) {
-            o.classList.remove("elegida");
-          });
-        el.classList.add("elegida");
-      }
+  el.closest(".pregunta")
+    .querySelectorAll(".opcion")
+    .forEach(o => o.classList.remove("elegida"));
 
-      var FBS = [
-        {
-          ok: "✓ Correcto — Claro pertenece al Grupo América Móvil.",
-          mal: "✗ Incorrecto. Es el <strong>Grupo América Móvil</strong>.",
-        },
-        {
-          ok: "✓ Correcto — Los sábados solo hasta las 3pm.",
-          mal: "✗ Incorrecto. Los sábados solo hasta las <strong>3:00 pm</strong>.",
-        },
-      ];
+  el.classList.add("elegida");
+}
 
-      function evaluarQuiz() {
-        var pregs = document.querySelectorAll(".pregunta");
-        var todas = true;
-        pregs.forEach(function (p) {
-          if (!p.querySelector(".opcion.elegida")) todas = false;
-        });
-        if (!todas) {
-          alert("Responde las dos preguntas.");
-          return;
-        }
-        intentos++;
-        var bien = 0;
-        pregs.forEach(function (p, i) {
-          var cv = p.getAttribute("data-correct");
-          var sel = p.querySelector(".opcion.elegida");
-          var sv = sel.getAttribute("data-v");
-          var fb = document.getElementById("fb" + (i + 1));
-          p.querySelectorAll(".opcion").forEach(function (o) {
-            o.classList.add("deshabilitada");
-          });
-          if (sv === cv) {
-            bien++;
-            sel.classList.add("correcta");
-            fb.className = "retroalimentacion ok";
-            fb.innerHTML = FBS[i].ok;
-          } else {
-            sel.classList.add("incorrecta");
-            p.querySelectorAll(".opcion").forEach(function (o) {
-              if (o.getAttribute("data-v") === cv) o.classList.add("correcta");
-            });
-            fb.className = "retroalimentacion mal";
-            fb.innerHTML = FBS[i].mal;
-          }
-        });
-        var pts = bien * 50;
-        document.getElementById("puntajeQuiz").textContent = pts + "/100";
-        document.getElementById("btnQuiz").style.display = "none";
-        var res = document.getElementById("resQuiz");
-        if (pts >= MIN_PUNTAJE) {
-          quizOk = true;
-          res.className = "resultado aprobado";
-          res.style.display = "block";
-          document.getElementById("puntajeQuiz").style.color = "var(--verde)";
-          document.getElementById("etiquetaQuiz").textContent = "¡Aprobado!";
-          actualizarBarra();
-          verificar();
-        } else {
-          res.className = "resultado reprobado";
-          res.style.display = "block";
-          document.getElementById("puntajeQuiz").style.color = "var(--naranja)";
-          if (intentos >= MAX_INT) {
-            document.getElementById("etiquetaQuiz").textContent = "Sin intentos. Reinicia el módulo.";
-            document.getElementById("btnReintentar").textContent = "Reiniciar";
-            document.getElementById("btnReintentar").style.display = "inline-block";
-            document.getElementById("btnReintentar").onclick = function () {
-              location.reload();
-            };
-          } else {
-            document.getElementById("etiquetaQuiz").textContent = "Mínimo 60 pts. Intento " + intentos + "/" + MAX_INT;
-            document.getElementById("btnReintentar").style.display = "inline-block";
-          }
-        }
-      }
+console.log("FUNCION NUEVA CARGADA");
+async function evaluarQuiz() {
 
-      function reiniciarQuiz() {
-        document.querySelectorAll(".opcion").forEach(function (o) {
-          o.classList.remove("elegida", "correcta", "incorrecta", "deshabilitada");
-        });
-        document.querySelectorAll(".retroalimentacion").forEach(function (f) {
-          f.className = "retroalimentacion";
-          f.innerHTML = "";
-        });
-        document.getElementById("resQuiz").style.display = "none";
-        document.getElementById("btnReintentar").style.display = "none";
-        document.getElementById("btnQuiz").style.display = "block";
-      }
+  // 🔥 SOLO UNA VEZ (correcto)
+  const card = document.getElementById("quizCard");
+  const id_evaluacion = card ? card.dataset.evaluacion : null;
 
-      /* Caso */
-      function elegirCaso(el) {
-        document.querySelectorAll("#opcionesCaso .opcion").forEach(function (o) {
-          o.classList.remove("elegida");
-        });
-        el.classList.add("elegida");
-      }
+  console.log("ID_EVALUACION FRONT:", id_evaluacion);
 
-      function evaluarCaso() {
-        var sel = document.querySelector("#opcionesCaso .opcion.elegida");
-        if (!sel) {
-          alert("Selecciona una opción.");
-          return;
-        }
-        var v = sel.getAttribute("data-v"),
-          C = "1",
-          fb = document.getElementById("casoFb");
-        document.querySelectorAll("#opcionesCaso .opcion").forEach(function (o) {
-          o.style.pointerEvents = "none";
-          if (o.getAttribute("data-v") === C) o.classList.add("correcta");
-        });
-        document.getElementById("btnCaso").style.display = "none";
-        if (v === C) {
-          sel.classList.add("correcta");
-          fb.innerHTML = "<strong>✓ Correcto:</strong> Después de las 7pm no se permite llamar (Ley 2300).";
-          fb.style.background = "#E8F5E9";
-          fb.style.color = "var(--verde)";
-        } else {
-          sel.classList.add("incorrecta");
-          fb.innerHTML =
-            "<strong>✗ Incorrecto.</strong> Después de las 7pm está prohibido llamar. Respuesta correcta: B.";
-          fb.style.background = "#FFF3E0";
-          fb.style.color = "var(--naranja)";
-        }
-        fb.classList.add("visible");
-        casoOk = true;
-        actualizarBarra();
-        verificar();
-      }
+  const preguntas = document.querySelectorAll(".pregunta");
 
-      /* Registro de inicio en BD */
-      window.addEventListener("load", function () {
-        fetch("/api/progreso/iniciar", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ id_modulo: 1 }),
-        });
-      });
+  let respuestas = [];
 
-      function verificar() {
-        if (quizOk && casoOk) {
-          var pts = parseInt(document.getElementById("puntajeQuiz").textContent);
+  preguntas.forEach(p => {
+    const seleccionada = p.querySelector(".opcion.elegida");
 
-          var respuestas = [];
-          document.querySelectorAll(".pregunta").forEach(function (p) {
-            var elegida = p.querySelector(".opcion.elegida");
-            if (elegida) {
-              respuestas.push({
-                id_pregunta: parseInt(p.getAttribute("data-id-pregunta")),
-                id_opcion: parseInt(elegida.getAttribute("data-id-opcion")),
-              });
-            }
-          });
+    if (!seleccionada) return;
 
-          fetch("/api/guardar-intento", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              id_evaluacion: 1,
-              id_modulo: 1,
-              puntaje: pts,
-              respuestas: respuestas,
-            }),
-          })
-            .then(function (res) {
-              return res.json();
-            })
-            .then(function (data) {
-              if (data.ok) {
-                setTimeout(function () {
-                  document.getElementById("completado").classList.add("visible");
-                  document.getElementById("completado").scrollIntoView({ behavior: "smooth" });
-                }, 500);
-              }
-            });
-        }
-      }
+    respuestas.push({
+      id_pregunta: p.dataset.id,
+      id_opcion: seleccionada.dataset.id
+    });
+  });
+
+  console.log("RESPUESTAS FRONT:", respuestas);
+
+  const res = await fetch("/guardar-intento", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      respuestas: respuestas,
+      id_evaluacion: id_evaluacion
+    })
+  });
+
+  const data = await res.json();
+
+  console.log("RESPUESTA BACKEND:", data);
+
+if (!data.ok) {
+  alert(data.mensaje);
+  return;
+}
+
+// 🟢 mostrar resultado en pantalla
+document.getElementById("resQuiz").style.display = "block";
+
+// 🟢 mostrar puntaje
+document.getElementById("puntajeQuiz").innerText =
+  data.puntaje + "%";
+
+// 🟢 mensaje de intento
+let mensaje =
+  "Intento " + data.intento_actual + " de " + data.limite;
+
+// 🟢 aprobado o no
+if (data.aprobado) {
+  mensaje += " • ✅ Aprobaste";
+} else {
+  mensaje += " • ❌ No aprobaste";
+}
+
+// 🟢 mostrar mensaje
+document.getElementById("etiquetaQuiz").innerText = mensaje;
+}
+
+
     </script>
   </body>
 </html>

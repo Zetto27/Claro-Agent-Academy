@@ -10,6 +10,8 @@ app.use(express.json());
 const dotenv = require("dotenv");
 dotenv.config({ path: "./env/.env" });
 
+const modulosRoutes = require("./routes/modulos");
+
 //4 - El directorio público
 app.use(express("/resources", express.static("public")));
 app.use("/resources", express.static(__dirname + "/public"));
@@ -43,9 +45,14 @@ app.get("/registro", (req, res) => {
   res.render("registro");
 });
 
-app.get("/modulo1", (req, res) => {
-  res.render("modulo1");
+app.get("/registro", (req, res) => {
+  res.render("registro");
 });
+
+app.get("/modulo1", (req, res) => {
+  res.redirect("/modulo/1");
+});
+app.use("/", modulosRoutes);
 
 // 10- Ruta para registrar usuarios
 app.post("/registro", async (req, res) => {
@@ -260,6 +267,48 @@ app.get("/principal", (req, res) => {
     nombre: req.session.nombre,
     rol: req.session.rol,
   });
+});
+
+// traer datos de modulo 1
+
+app.get("/modulo1", async (req, res) => {
+  try {
+    // 🔹 traer módulo
+    const [modulo] = await connnection.promise().query("SELECT * FROM modulos WHERE id_modulo = 1");
+
+    // 🔹 traer contenidos
+    const [contenidos] = await connnection.promise().query("SELECT * FROM contenidos WHERE id_modulo = 1");
+
+    // 🔹 buscar contenido 1 y 2
+    const contenido1 = contenidos.find((c) => c.id_contenido === 1);
+    const contenido2 = contenidos.find((c) => c.id_contenido === 2);
+
+    // 🔹 enviar a la vista
+    res.render("modulo1", {
+      titulo: modulo[0].titulo,
+      descripcion: modulo[0].descripcion,
+      contenido1: contenido1,
+      contenido2: contenido2,
+    });
+  } catch (error) {
+    console.log(error);
+    res.send("Error");
+  }
+});
+
+// traer datos de modulo 2
+app.get("/modulo2", async (req, res) => {
+  try {
+    const [modulo] = await connnection.promise().query("SELECT * FROM modulos WHERE id_modulo = 1");
+
+    res.render("modulo2", {
+      titulo: modulo[0].titulo,
+      descripcion: modulo[0].descripcion,
+    });
+  } catch (error) {
+    console.log(error);
+    res.send("Error");
+  }
 });
 
 // const PORT = process.env.PORT || 3000;
