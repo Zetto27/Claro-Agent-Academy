@@ -44,26 +44,24 @@
 
 
       <!-- Sección 2 -->
-      <div class="acordeon" data-sec="1">
-        <button class="acordeon-btn">
-          <h4><%= contenido2.titulo %></h4>
-          <svg
-            class="flecha"
-            width="14"
-            height="14"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2.5">
-            <polyline points="6 9 12 15 18 9" />
-          </svg>
-        </button>
-        <div class="acordeon-cuerpo">
-          <div class="acordeon-inner">
-            <%- contenido2.descripcion %>
-          </div>
-          </div>  
+<% if (contenido2 && contenido2.descripcion && contenido2.descripcion.trim() !== '') { %>
+
+  <div class="acordeon" data-sec="1">
+    <button class="acordeon-btn">
+      <h4><%= contenido2.titulo %></h4>
+      <svg class="flecha" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+        <polyline points="6 9 12 15 18 9" />
+      </svg>
+    </button>
+
+    <div class="acordeon-cuerpo">
+      <div class="acordeon-inner">
+        <%- contenido2.descripcion %>
       </div>
+    </div>  
+  </div>
+
+<% } %>
 
       <!-- Quiz -->
       <div class="eval-card">
@@ -112,17 +110,27 @@
     <nav class="nav-inferior">
       <a class="nav-item" href="/">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+          <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" /> 
           <polyline points="9 22 9 12 15 12 15 22" />
         </svg>
         Inicio
       </a>
-      <a class="nav-item" href="/modulo/<%= siguiente %>">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <polyline points="9 18 15 12 9 6" />
-        </svg>
-        Siguiente
-      </a>
+      <% if (numeroModulo < totalModulos) { %>
+
+  <a class="nav-item" href="/modulo/<%= numeroModulo + 1 %>">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <polyline points="9 18 15 12 9 6" />
+    </svg>
+    Siguiente
+  </a>
+
+<% } else { %>
+
+  <a class="nav-item" href="/certificado">
+    🎓 Descargar certificado
+  </a>
+
+<% } %>
     </nav>
 
     <script>

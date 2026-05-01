@@ -900,3 +900,27 @@ body {
   width: 20px;
   height: 20px;
 }
+.kpi-card {
+  background: var(--blanco);
+  border-radius: 10px;
+  padding: 20px;
+  margin-bottom: 14px;
+}
+.tabla-kpi {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.78rem;
+}
+.tabla-kpi th {
+  background: var(--rojo);
+  color: var(--blanco);
+  padding: 6px 8px;
+  text-align: left;
+}
+.tabla-kpi td {
+  padding: 6px 8px;
+  border-bottom: 1px solid var(--gris-borde);
+}
+.tabla-kpi tr:nth-child(even) td {
+  background: var(--gris-fondo);
+}

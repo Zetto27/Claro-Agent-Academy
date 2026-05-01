@@ -221,7 +221,7 @@ INSERT INTO contenidos (id_modulo, titulo, tipo, descripcion, orden) VALUES
         </div></div>',   2);
         
         
--- Contenido del módulo 3
+-- Contenido del módulo 4
 INSERT INTO contenidos (id_modulo, titulo, tipo, descripcion, orden) VALUES
   (4,'Scripts de apertura y cierre', 'texto','<div class="acordeon" data-sec="1">
         <div class="acordeon-cuerpo"><div class="acordeon-inner">
@@ -249,6 +249,20 @@ INSERT INTO contenidos (id_modulo, titulo, tipo, descripcion, orden) VALUES
             </div>
         </div></div>
     </div>',   2);
+    
+    -- Contenido del módulo 5
+INSERT INTO contenidos (id_modulo, titulo, tipo, descripcion, orden) VALUES
+  (5,'📊 Métricas del agente (KPIs)', 'texto','    <div class="kpi-card">
+        <table class="tabla-kpi">
+            <tr><th>KPI</th><th>Significado</th><th>Meta</th></tr>
+            <tr><td><strong>AHT</strong></td><td>Tiempo promedio de llamada</td><td>≤ 8 min</td></tr>
+            <tr><td><strong>FCR</strong></td><td>Resuelto en primera llamada</td><td>≥ 75%</td></tr>
+            <tr><td><strong>CSAT</strong></td><td>Satisfacción del cliente</td><td>≥ 4/5</td></tr>
+            <tr><td><strong>SL</strong></td><td>Atender en menos de 20s</td><td>≥ 80%</td></tr>
+            <tr><td><strong>Adherencia</strong></td><td>Cumplimiento de horario</td><td>≥ 95%</td></tr>
+        </table>
+    </div>', 1),
+    (5,'','','',1);
 
 -- Evaluación del módulos
 INSERT INTO evaluaciones (id_modulo, titulo, puntaje_aprobacion) VALUES
@@ -281,46 +295,69 @@ INSERT INTO preguntas (id_evaluacion, enunciado, orden) VALUES
   
       -- Preguntas de la evaluación 4
   INSERT INTO preguntas (id_evaluacion, enunciado, orden) VALUES
-  (11, '¿Qué debes decir siempre al abrir una llamada?', 1),
-  (11, '¿Qué significa E-A-R?',2),
-  (11, '¿Un cliente dice furioso: "¡Llevan 3 días sin solucionar nada!" ¿Cómo respondes?',3);
+  (4, '¿Qué debes decir siempre al abrir una llamada?', 1),
+  (4, '¿Qué significa E-A-R?',2),
+  (4, '¿Un cliente dice furioso: "¡Llevan 3 días sin solucionar nada!" ¿Cómo respondes?',3);
+
+  -- Preguntas de la evaluación 5
+  INSERT INTO preguntas (id_evaluacion, enunciado, orden) VALUES
+  (5, '¿A qué grupo pertenece Claro?', 1),
+  (5, '¿El PBX Móvil necesita hardware?',2),
+  (5, '¿Cuál es la falla FB-01?',3),
+  (5, '¿Qué es E-A-R?',4),
+  (5, '¿Qué KPI mide la resolución en primera llamada?',5);
 
 -- Opciones pregunta  modulo 1
 INSERT INTO opciones (id_pregunta, texto, es_correcta) VALUES
-  (5, 'Grupo Telefonica',         FALSE),
-  (5, 'Grupo América Movil',   TRUE),
-  (5, 'Grupo Movistar',     FALSE),
-    (12, 'Hasta las 3:oo pm',        TRUE),
-  (12, 'Hasta las 7:00 pm',   FALSE),
-  (12, 'No se puede los sábados',     FALSE),
-    (13, 'Llamo porque es día Hábil',        FALSE),
-  (13, 'Le explico que después de las 7:00 pm no se puede llamar',   TRUE),
-  (13, 'Solo llamo a los que conozco',     FALSE);
+  (1, 'Grupo Telefonica',         FALSE),
+  (1, 'Grupo América Movil',   TRUE),
+  (1, 'Grupo Movistar',     FALSE),
+    (2, 'Hasta las 3:oo pm',        TRUE),
+  (2, 'Hasta las 7:00 pm',   FALSE),
+  (2, 'No se puede los sábados',     FALSE),
+    (3, 'Llamo porque es día Hábil',        FALSE),
+  (3, 'Le explico que después de las 7:00 pm no se puede llamar',   TRUE),
+  (3, 'Solo llamo a los que conozco',     FALSE);
   
   -- Opciones pregunta  modulo 2
   INSERT INTO opciones (id_pregunta, texto, es_correcta) VALUES
-  (23, 'Si, un servidor',         FALSE),
-  (23, 'Si, un router especial',   FALSE),
-  (23, 'No, es 100% en la nube',     TRUE),
-    (24, '+57 seguido de 10 dígitos',        TRUE),
-  (24, 'Hasta las 7:00 pm',   FALSE),
-  (24, 'Con prefijo 03',     FALSE),
-    (25, 'Si tiene señal celular',        FALSE),
-  (25, 'Si el numero tiene el prefijo +57',   TRUE),
-  (25, 'Si tiene plan de datos',     FALSE);
+  (4, 'Si, un servidor',         FALSE),
+  (4, 'Si, un router especial',   FALSE),
+  (4, 'No, es 100% en la nube',     TRUE),
+    (5, '+57 seguido de 10 dígitos',        TRUE),
+  (5, 'Hasta las 7:00 pm',   FALSE),
+  (5, 'Con prefijo 03',     FALSE),
+    (6, 'Si tiene señal celular',        FALSE),
+  (6, 'Si el numero tiene el prefijo +57',   TRUE),
+  (6, 'Si tiene plan de datos',     FALSE);
   
     -- Opciones pregunta  modulo 3
   INSERT INTO opciones (id_pregunta, texto, es_correcta) VALUES
-  (26, 'Audio entrecortado',         FALSE),
-  (26, 'Número sin prefijo +57',   TRUE),
-  (26, 'Internet lento',     FALSE),
-    (27, '.ogg y .m4a',        FALSE),
-  (27, 'Cualquier formato',   FALSE),
-  (27, '.mp3 y wav',     TRUE),
-    (28, 'FA-01 — Audio entrecortado',        FALSE),
-  (28, 'FB-02 — IVR en loop',   TRUE),
-  (28, 'FC-01 — No accede a la web',     FALSE);
+  (7, 'Audio entrecortado',         FALSE),
+  (7, 'Número sin prefijo +57',   TRUE),
+  (7, 'Internet lento',     FALSE),
+    (8, '.ogg y .m4a',        FALSE),
+  (8, 'Cualquier formato',   FALSE),
+  (8, '.mp3 y wav',     TRUE),
+    (9, 'FA-01 — Audio entrecortado',        FALSE),
+  (9, 'FB-02 — IVR en loop',   TRUE),
+  (9, 'FC-01 — No accede a la web',     FALSE);
 
+
+ -- Opciones pregunta  modulo 4
+ INSERT INTO opciones (id_pregunta, texto, es_correcta) VALUES
+  (10, 'Solo el nombre de la empresa',         FALSE),
+  (10, 'Tu correo electronico',   FALSE),
+  (10, 'Tu nombre y número de agente',     TRUE),
+    (11, 'Escalar, Asignar, Reportar',        FALSE),
+  (11, 'Empatizar, Aclarar, Resolver',   TRUE),
+  (11, 'Evaluar, Analizar, Redirigir',     FALSE),
+    (12, '"El equipo técnico está muy ocupado..."',        FALSE),
+  (12, '"Entendido su frustración. Voy a revisar si tickt ahora mismo"',   TRUE),
+  (12, '"Lo transfiero a mi supervisor"',     FALSE);
+
+
+ -- Opciones pregunta  modulo 4
  INSERT INTO opciones (id_pregunta, texto, es_correcta) VALUES
   (38, 'Solo el nombre de la empresa',         FALSE),
   (38, 'Tu correo electronico',   FALSE),
@@ -331,11 +368,28 @@ INSERT INTO opciones (id_pregunta, texto, es_correcta) VALUES
     (40, '"El equipo técnico está muy ocupado..."',        FALSE),
   (40, '"Entendido su frustración. Voy a revisar si tickt ahora mismo"',   TRUE),
   (40, '"Lo transfiero a mi supervisor"',     FALSE);
+  
+   -- Opciones pregunta  modulo 4
+ INSERT INTO opciones (id_pregunta, texto, es_correcta) VALUES
+(16, 'Telefonica',         FALSE),
+(16, 'Américo Móvil',         	TRUE),
+(16, 'Liberty',         FALSE),
+(17, 'No, es 100% nube',         TRUE),
+(17, 'Si, un servidor',         FALSE),
+(17, 'Si, un router',         FALSE),
+(18, 'Audio entrecortado',         FALSE),
+(18, 'IVR en loop',         FALSE),
+(18, 'Llamadas no llegas (sin +57)',         TRUE),
+(19, 'Escalar, Asignar, Reportar',         FALSE),
+(19, 'Empatizar, Aclarar, Resolver',         TRUE),
+(19, 'Evaluar, Analizar, Redirigir',         FALSE),
+(20, 'FCR',        TRUE),
+(20, 'AHT',         FALSE),
+(20, 'CSAT',         FALSE);
 
+  
 
- 
- 
-  DELETE FROM respuesta_intentos WHERE id_usuario;
+DELETE FROM respuesta_intentos WHERE id_usuario;
 
 -- Opciones pregunta 2
 INSERT INTO opciones (id_pregunta, texto, es_correcta) VALUES

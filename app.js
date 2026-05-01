@@ -32,6 +32,9 @@ app.use(
   }),
 );
 
+const path = require("path");
+const fs = require("fs");
+
 // 8- Invocar a la base de datos
 const connnection = require("./database/db");
 
@@ -136,6 +139,17 @@ app.post("/registro", async (req, res) => {
 
 app.get("/usuarios", async (req, res) => {
   try {
+    // 🔒 validar sesión
+    if (!req.session.loggedin) {
+      return res.redirect("/login");
+    }
+
+    // 🔒 validar rol
+    if (req.session.rol !== "administrador") {
+      return res.send("🚫 No tienes permisos para acceder");
+    }
+
+    // 🔹 traer usuarios
     const [rows] = await connnection.promise().query(`
       SELECT 
         u.id_usuario,
@@ -157,80 +171,6 @@ app.get("/usuarios", async (req, res) => {
   }
 });
 
-// autenticaion
-app.post("/auth", async (req, res) => {
-  const usuario = req.body.usuario;
-  const contrasena = req.body.contrasena;
-
-  // 🔒 Validación
-  if (!usuario || !contrasena) {
-    return res.render("login", {
-      alert: true,
-      alertTitle: "Error",
-      alertMessage: "Ingresa un usuario y contraseña",
-      alertIcon: "error",
-      showConfirmButton: true,
-      timer: false,
-      ruta: "login",
-    });
-  }
-
-  connnection.query(
-    "SELECT u.*, r.nombre_rol FROM usuarios u JOIN roles r ON u.id_rol = r.id_rol WHERE u.usuario = ?",
-    [usuario],
-    async (error, results) => {
-      if (error) {
-        console.log(error);
-        return res.send("Error en el servidor");
-      }
-
-      // ❌ usuario no existe
-      if (results.length === 0) {
-        return res.render("login", {
-          alert: true,
-          alertTitle: "Error",
-          alertMessage: "Usuario y/o contraseña incorrecta",
-          alertIcon: "error",
-          showConfirmButton: true,
-          timer: false,
-          ruta: "login",
-        });
-      }
-
-      // 🔐 comparar contraseña
-      const valido = await bcryptjs.compare(contrasena, results[0].contrasena);
-
-      if (!valido) {
-        return res.render("login", {
-          alert: true,
-          alertTitle: "Error",
-          alertMessage: "Usuario y/o contraseña incorrecta",
-          alertIcon: "error",
-          showConfirmButton: true,
-          timer: false,
-          ruta: "login",
-        });
-      }
-
-      // ✅ login correcto
-      req.session.loggedin = true; // 🔥 era res.session ❌
-      req.session.nombre = results[0].nombre;
-      req.session.rol = results[0].nombre_rol;
-      req.session.id_usuario = results[0].id_usuario;
-
-      res.render("login", {
-        alert: true,
-        alertTitle: "Login",
-        alertMessage: "¡Login correcto!",
-        alertIcon: "success",
-        showConfirmButton: false,
-        timer: 1500,
-        ruta: "",
-      });
-    },
-  );
-});
-
 // autenticación para rutas privadas
 app.get("/", (req, res) => {
   if (req.session.loggedin) {
@@ -243,6 +183,68 @@ app.get("/", (req, res) => {
       login: false,
       nombre: "Debe iniciar sesión",
     });
+  }
+});
+
+app.post("/auth", async (req, res) => {
+  const usuario = req.body.usuario;
+  const contrasena = req.body.contrasena;
+
+  if (!usuario || !contrasena) {
+    return res.render("login", {
+      alert: true,
+      alertTitle: "Error",
+      alertMessage: "Ingresa usuario y contraseña",
+      alertIcon: "error",
+      showConfirmButton: true,
+      timer: false,
+      ruta: "login",
+    });
+  }
+
+  try {
+    const [results] = await connnection
+      .promise()
+      .query("SELECT u.*, r.nombre_rol FROM usuarios u JOIN roles r ON u.id_rol = r.id_rol WHERE u.usuario = ?", [
+        usuario,
+      ]);
+
+    if (results.length === 0) {
+      return res.render("login", {
+        alert: true,
+        alertTitle: "Error",
+        alertMessage: "Usuario no existe",
+        alertIcon: "error",
+        showConfirmButton: true,
+        timer: false,
+        ruta: "login",
+      });
+    }
+
+    const valido = await bcryptjs.compare(contrasena, results[0].contrasena);
+
+    if (!valido) {
+      return res.render("login", {
+        alert: true,
+        alertTitle: "Error",
+        alertMessage: "Contraseña incorrecta",
+        alertIcon: "error",
+        showConfirmButton: true,
+        timer: false,
+        ruta: "login",
+      });
+    }
+
+    // ✅ sesión correcta
+    req.session.loggedin = true;
+    req.session.nombre = results[0].nombre;
+    req.session.rol = results[0].nombre_rol;
+    req.session.id_usuario = results[0].id_usuario;
+
+    res.redirect("/");
+  } catch (error) {
+    console.log(error);
+    res.send("Error en login");
   }
 });
 
@@ -340,6 +342,132 @@ app.get("/modulo2", async (req, res) => {
   } catch (error) {
     console.log(error);
     res.send("Error");
+  }
+});
+
+// Certificado
+
+const PDFDocument = require("pdfkit");
+
+app.get("/certificado", async (req, res) => {
+  try {
+    const id_usuario = req.session.id_usuario;
+
+    if (!id_usuario) {
+      return res.redirect("/login");
+    }
+
+    // 🔹 código único
+    const codigo = "CERT-" + id_usuario + "-" + Date.now();
+
+    // 🔹 nombre y ruta del archivo
+    const nombreArchivo = codigo + ".pdf";
+    const rutaArchivo = path.join(__dirname, "public", "certificados", nombreArchivo);
+
+    // 🔹 rutas de imágenes
+    const rutaLogo = path.join(__dirname, "public", "img", "logo.png");
+    const rutaFirma = path.join(__dirname, "public", "img", "firma.png");
+
+    // 🔹 traer usuario
+    const [usuario] = await connnection
+      .promise()
+      .query("SELECT nombre FROM usuarios WHERE id_usuario = ?", [id_usuario]);
+
+    // 🔹 crear PDF
+    const doc = new PDFDocument({
+      size: "A4",
+      layout: "landscape",
+      margin: 50,
+    });
+
+    // 🔹 stream para guardar
+    const stream = fs.createWriteStream(rutaArchivo);
+
+    // 🔹 headers
+    res.setHeader("Content-Type", "application/pdf");
+    res.setHeader("Content-Disposition", "attachment; filename=" + nombreArchivo);
+
+    // 🔹 salida doble (archivo + descarga)
+    doc.pipe(stream);
+    doc.pipe(res);
+
+    // 🔹 BORDE
+    doc.rect(20, 20, 800, 550).lineWidth(3).stroke("#22c55e");
+
+    // 🔹 LOGO
+    if (fs.existsSync(rutaLogo)) {
+      doc.image(rutaLogo, 50, 40, { width: 120 });
+    }
+
+    // 🔹 TÍTULO
+    doc.fontSize(32).fillColor("#22c55e").text("CERTIFICADO DE FINALIZACIÓN", 0, 120, {
+      align: "center",
+    });
+
+    // 🔹 TEXTO
+    doc.moveDown(2);
+
+    doc.fontSize(16).fillColor("black").text("Se certifica que", {
+      align: "center",
+    });
+
+    // 🔹 NOMBRE
+    doc.moveDown();
+
+    doc.fontSize(28).fillColor("#111").text(usuario[0].nombre, {
+      align: "center",
+    });
+
+    // 🔹 CURSO
+    doc.moveDown();
+
+    doc.fontSize(16).text("ha completado satisfactoriamente el curso", {
+      align: "center",
+    });
+
+    doc.moveDown();
+
+    doc.fontSize(20).fillColor("#22c55e").text("ClaroAgent Academy", {
+      align: "center",
+    });
+
+    // 🔹 FECHA
+    doc.moveDown();
+
+    doc
+      .fontSize(12)
+      .fillColor("black")
+      .text("Fecha: " + new Date().toLocaleDateString(), {
+        align: "center",
+      });
+
+    // 🔹 CÓDIGO
+    doc.moveDown();
+
+    doc.fontSize(10).text("Código: " + codigo, {
+      align: "center",
+    });
+
+    // 🔹 FIRMA
+    if (fs.existsSync(rutaFirma)) {
+      doc.image(rutaFirma, 500, 400, { width: 150 });
+    }
+
+    doc.fontSize(12).text("Director Académico", 520, 520);
+
+    // 🔹 FINALIZAR PDF
+    doc.end();
+
+    // 🔹 guardar en BD
+    await connnection.promise().query(
+      `INSERT INTO certificados 
+       (id_usuario, codigo_certificado, ruta_pdf) 
+       VALUES (?, ?, ?)`,
+      [id_usuario, codigo, "/certificados/" + nombreArchivo],
+    );
+  } catch (error) {
+    console.log(error);
+    res.send("Error generando certificado");
   }
 });
 
